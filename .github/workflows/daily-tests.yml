@@ -1,121 +1,25 @@
-name: Daily Automation Tests
+name: Maven Daily Build
 
-# Schedule to run every day at 4 PM (16:00 UTC)
-# Note: GitHub Actions uses UTC time, adjust if needed for your timezone
 on:
   schedule:
-    - cron: '0 18 * * *'  # 4 PM UTC daily
-  workflow_dispatch:  # Allow manual triggering from GitHub UI
+    # Runs every day at 18:00 UTC
+    - cron: "0 18 * * *"
+  workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:
-  test:
-    name: Run Automation Tests
+  build:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        java-version: [11]
-    
+
     steps:
-    # Checkout the repository code
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    # Set up Java environment
-    - name: Set up JDK ${{ matrix.java-version }}
-      uses: actions/setup-java@v4
-      with:
-        java-version: ${{ matrix.java-version }}
-        distribution: 'adopt'
-        
-    # Cache Maven dependencies for faster builds
-    - name: Cache Maven dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-m2
-          
-    # Install Chrome browser for Selenium tests
-    - name: Install Chrome browser
-      uses: browser-actions/setup-chrome@latest
-      with:
-        chrome-version: stable
-        
-    # Set up virtual display for headless browser testing
-    - name: Setup virtual display
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y xvfb
-        
-    # Validate Maven project structure
-    - name: Validate Maven project
-      run: mvn validate
-      
-    # Compile the project
-    - name: Compile project
-      run: mvn compile test-compile
-      
-    # Run the tests
-    - name: Run automation tests
-      run: |
-        export DISPLAY=:99
-        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        mvn test -Dheadless=true
-      env:
-        # Set environment variables for tests
-        MAVEN_OPTS: "-Xmx1024m"
-        
-    # Upload test results and reports
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results-${{ github.run_number }}
-        path: |
-          target/surefire-reports/
-          test-output/
-          ReportResults/
-        retention-days: 30
-        
-    # Upload screenshots if tests fail
-    - name: Upload screenshots on failure
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: test-screenshots-${{ github.run_number }}
-        path: |
-          screenshots/
-          test-output/screenshots/
-        retention-days: 7
-        
-    # Generate and upload test summary
-    - name: Publish test results
-      uses: dorny/test-reporter@v1
-      if: always()
-      with:
-        name: Maven Test Results
-        path: 'target/surefire-reports/*.xml'
-        reporter: java-junit
-        fail-on-error: false
-        
-  # Notification job (optional)
-  notify:
-    name: Send Notifications
-    runs-on: ubuntu-latest
-    needs: test
-    if: always()
-    
-    steps:
-    - name: Notify on success
-      if: needs.test.result == 'success'
-      run: |
-        echo "✅ Daily automation tests completed successfully!"
-        # Add notification logic here (email, Slack, etc.)
-        
-    - name: Notify on failure
-      if: needs.test.result == 'failure'
-      run: |
-        echo "❌ Daily automation tests failed!"
-        # Add notification logic here (email, Slack, etc.)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install

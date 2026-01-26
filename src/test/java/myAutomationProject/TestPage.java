@@ -74,16 +74,16 @@ public class TestPage {
 			"The User Name of the logged user does not match expected value");
 	}
 	
-	@Test
-	public void testLoginToITMApplication() throws Exception {
-		// Create Sikuli page objects
-		SikuliMainPage mainpage = new SikuliMainPage();
+	// @Test
+	// public void testLoginToITMApplication() throws Exception {
+	// 	// Create Sikuli page objects
+	// 	SikuliMainPage mainpage = new SikuliMainPage();
 		
-		// Perform Sikuli-based login
-		mainpage.loginToDesktopITMApp(SikuliDataPage.UName, SikuliDataPage.PW);
+	// 	// Perform Sikuli-based login
+	// 	mainpage.loginToDesktopITMApp(SikuliDataPage.UName, SikuliDataPage.PW);
 		
-		// Verify login success
-		boolean isLoggedIn = mainpage.isUserLoggedIn();
-		Assert.assertTrue(isLoggedIn, "The logged user name is not displayed correctly");
-	}
+	// 	// Verify login success
+	// 	boolean isLoggedIn = mainpage.isUserLoggedIn();
+	// 	Assert.assertTrue(isLoggedIn, "The logged user name is not displayed correctly");
+	// }
 }

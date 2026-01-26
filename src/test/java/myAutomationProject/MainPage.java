@@ -22,7 +22,7 @@ public class MainPage {
 	private By loginButton = By.id("submit");
 	
 	private By okButton = By.id("clear");
-	private By verifyUserName = By.cssSelector("h1[class='post-title']");
+	private By verifyUserName = By.xpath("//h1[@class='post-title']");
 	
 	public MainPage(WebDriver driver) {
 		this.driver = driver;

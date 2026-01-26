@@ -17,9 +17,9 @@ public class MainPage {
 	private WebDriver driver;
 
 	// Locators using more efficient selectors
-	private By userName = By.id("UserName");
-	private By password = By.id("Password");
-	private By loginButton = By.xpath("//input[@type='submit' or @type='button'][contains(@class,'btn') or @id='loginBtn']");
+	private By userName = By.id("username");
+	private By password = By.id("password");
+	private By loginButton = By.id("submit");
 	
 	private By okButton = By.id("clear");
 	private By verifyUserName = By.cssSelector("button[id='dropdownMenu1'] span[class='name']");

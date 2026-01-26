@@ -8,7 +8,7 @@ public class Data {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static String URL = "http://bi3-eedapp-01.cloudapp.net:81/Encounter/Index";
+	public static String URL = "https://practicetestautomation.com/practice-test-login/";
 	public static String UserName = "SysAdmin";
 	public static String Password = "Admin@123";
 }

@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: myAutomationProject.TestPage
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 90.356 sec <<< FAILURE! - in myAutomationProject.TestPage
+LogintoITMApplication(myAutomationProject.TestPage)  Time elapsed: 29.626 sec  <<< FAILURE!
+org.sikuli.script.FindFailed: can not find P(D:/HisanBackup/HisanS/D/Hisan/Learning/Roshana/SikuliImages/lbl_HomePageLogo.PNG) S: 0.7 in S(0)[0,0 1366x768]
+	at myAutomationProject.TestPage.LogintoITMApplication(TestPage.java:63)
+

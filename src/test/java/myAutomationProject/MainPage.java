@@ -1,6 +1,6 @@
 package myAutomationProject;
 
-import org.openqa.selenium.Alert;
+import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,38 +14,34 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage {
 
-WebDriver driver;
+	private WebDriver driver;
 
+	// Locators using more efficient selectors
+	private By userName = By.id("UserName");
+	private By password = By.id("Password");
+	private By loginButton = By.xpath("//input[@type='submit' or @type='button'][contains(@class,'btn') or @id='loginBtn']");
 	
-	By UserName = By.xpath(".//*[@id='UserName']");
-	By Password = By.xpath(".//*[@id='Password']");
-	By LoginButton = By.xpath(".//*[@id='loginForm']/form/div[4]/div/input");
+	private By okButton = By.id("clear");
+	private By verifyUserName = By.cssSelector("button[id='dropdownMenu1'] span[class='name']");
 	
-	By OKButton = By.id("clear");
-	By VerifyUserName = By.cssSelector("button[id =dropdownMenu1] span[class=name]");
-	
-	public MainPage (WebDriver driver)
-	{
+	public MainPage(WebDriver driver) {
 		this.driver = driver;
 	}
 	
-	public void LoginPagetestcase(String uid, String Pwd)
-	{
-		driver.findElement(UserName).sendKeys(uid);
-		driver.findElement(Password).sendKeys(Pwd);
-		driver.findElement(LoginButton).click();	
+	public void loginPageTestCase(String uid, String pwd) {
+		driver.findElement(userName).sendKeys(uid);
+		driver.findElement(password).sendKeys(pwd);
+		driver.findElement(loginButton).click();
 	}
 	
-	public void ClickOkfortheAlert() 
-	{
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(OKButton));
+	public void clickOkForTheAlert() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(okButton));
 		
-		driver.findElement(OKButton).click();
+		element.click();
 	}
 	
-	public String VerifyUserName()
-	{
-		return driver.findElement(VerifyUserName).getText();
+	public String verifyUserName() {
+		return driver.findElement(verifyUserName).getText();
 	}
 }

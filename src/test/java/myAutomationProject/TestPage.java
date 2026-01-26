@@ -1,67 +1,89 @@
 package myAutomationProject;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import atu.testng.reports.ATUReports;
-import atu.testng.reports.utils.Utils;
-import atu.testng.reports.listeners.ATUReportsListener;
-import atu.testng.reports.listeners.ConfigurationListener;
-import atu.testng.reports.listeners.MethodListener;
-import myAutomationProject.MainPage;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+// Note: ATU Reports imports commented out - uncomment if ATU dependency is added
+// import atu.testng.reports.listeners.ATUReportsListener;
+// import atu.testng.reports.listeners.ConfigurationListener;
+// import atu.testng.reports.listeners.MethodListener;
 
 /**
  * @author HisanS
- *
+ * 
+ * Test class for automation scenarios
+ * Updated to use Selenium 4 and modern WebDriver management
  */
 
-@Listeners({ ATUReportsListener.class, ConfigurationListener.class,
-	MethodListener.class })
+// Note: ATU Reports listeners commented out - uncomment if ATU dependency is added
+// @Listeners({ ATUReportsListener.class, ConfigurationListener.class, MethodListener.class })
 
 public class TestPage {
 	
-	//Set Property for ATU Reporter Configuration
-    {
-      System.setProperty("atu.reporter.config",System.getProperty("user.dir")+"\\ATUReports\\ATUReporter_Selenium_testNG\\atu.properties");
-
-    }
-	@Test
-	public void AveraEEDVerifyLoginPage() throws Exception
+	private WebDriver driver;
+	
+	@BeforeMethod
+	public void setUp() {
+		// Use WebDriverManager for automatic driver management
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		driver.manage().window().maximize();
+	}
+	
+	@AfterMethod
+	public void tearDown() {
+		if (driver != null) {
+			driver.quit();
+		}
+	}
+	
+	// ATU Reporter Configuration - uncomment if ATU dependency is added
+	/*
 	{
-		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\src\\test\\resources\\chromedriver.exe");
-		WebDriver driver = new ChromeDriver();
-			
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-	    driver.manage().window().maximize();
-	    
-	    Data Datapage = new Data(driver);
-	    MainPage login = new MainPage(driver);
-	    
-	    driver.get(Datapage.URL);
-        login.LoginPagetestcase(Datapage.UserName, Datapage.Password);
-        //login.ClickOkfortheAlert();
-        
-        Assert.assertEquals(login.VerifyUserName(), "System Administrator", "The User Name of the logged user does not show");
-        driver.quit();
+		String configPath = System.getProperty("user.dir") + "/ATUReports/ATUReporter_Selenium_testNG/atu.properties";
+		System.setProperty("atu.reporter.config", configPath);
+	}
+	*/
+	@Test
+	public void testAveraEEDLoginPageVerification() throws Exception {
+		// Create page objects
+		MainPage login = new MainPage(driver);
+		
+		// Navigate to application
+		driver.get(Data.URL);
+		
+		// Perform login
+		login.loginPageTestCase(Data.UserName, Data.Password);
+		
+		// Optional: Handle alert if needed
+		// login.clickOkForTheAlert();
+		
+		// Verify login success
+		String actualUserName = login.verifyUserName();
+		Assert.assertEquals(actualUserName, "System Administrator", 
+			"The User Name of the logged user does not match expected value");
 	}
 	
 	@Test
-	public void LogintoITMApplication() throws Exception
-	{
+	public void testLoginToITMApplication() throws Exception {
+		// Create Sikuli page objects
+		SikuliMainPage mainpage = new SikuliMainPage();
 		
-         SikuliMainPage mainpage = new SikuliMainPage();
-         SikuliDataPage data = new SikuliDataPage();
-         
-         mainpage.LogintoDesktopITMAPP(data.UName, data.PW);
-        
-         Assert.assertTrue(mainpage.ensureExists(), "The logged user name is not displayed correctly");
+		// Perform Sikuli-based login
+		mainpage.loginToDesktopITMApp(SikuliDataPage.UName, SikuliDataPage.PW);
+		
+		// Verify login success
+		boolean isLoggedIn = mainpage.isUserLoggedIn();
+		Assert.assertTrue(isLoggedIn, "The logged user name is not displayed correctly");
 	}
 }

@@ -2,8 +2,8 @@ name: Maven Daily Build
 
 on:
   schedule:
-    # Runs every day at 18:00 UTC
-    - cron: "*/5 * * * *"
+    # Runs every day at 21:30 UTC
+    - cron: "30 21 * * *"
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:

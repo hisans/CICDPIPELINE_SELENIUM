@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -34,10 +35,20 @@ public class TestPage {
 	public void setUp() {
 		// Use WebDriverManager for automatic driver management
 		WebDriverManager.chromedriver().setup();
-		driver = new ChromeDriver();
+		
+		// Configure Chrome options for CI environments
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--headless"); // Run in headless mode
+		options.addArguments("--no-sandbox"); // Required for CI environments
+		options.addArguments("--disable-dev-shm-usage"); // Overcome limited resource problems
+		options.addArguments("--disable-gpu"); // Disable GPU hardware acceleration
+		options.addArguments("--remote-allow-origins=*"); // Allow remote origins
+		options.addArguments("--window-size=1920,1080"); // Set window size for headless mode
+		
+		driver = new ChromeDriver(options);
 		
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-		driver.manage().window().maximize();
+		// Note: Don't maximize in headless mode, window size is set above
 	}
 	
 	@AfterMethod

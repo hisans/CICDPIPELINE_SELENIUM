@@ -80,9 +80,9 @@ public class TestPage {
 		// login.clickOkForTheAlert();
 		
 		// Verify login success
-		String actualUserName = login.verifyUserName();
-		Assert.assertEquals(actualUserName, "System Administrator", 
-			"The User Name of the logged user does not match expected value");
+		String actualMessage = login.verifyMessage();
+		Assert.assertEquals(actualMessage, "Logged In Successfully", 
+			"This is the correct message");
 	}
 	
 	// @Test

@@ -22,7 +22,7 @@ public class MainPage {
 	private By loginButton = By.id("submit");
 	
 	private By okButton = By.id("clear");
-	private By verifyUserName = By.cssSelector("button[id='dropdownMenu1'] span[class='name']");
+	private By verifyUserName = By.cssSelector("h1[class='post-title']");
 	
 	public MainPage(WebDriver driver) {
 		this.driver = driver;
@@ -41,7 +41,7 @@ public class MainPage {
 		element.click();
 	}
 	
-	public String verifyUserName() {
+	public String verifyMessage() {
 		return driver.findElement(verifyUserName).getText();
 	}
 }

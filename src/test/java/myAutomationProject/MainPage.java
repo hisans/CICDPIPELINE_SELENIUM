@@ -32,6 +32,7 @@ public class MainPage {
 		driver.findElement(userName).sendKeys(uid);
 		driver.findElement(password).sendKeys(pwd);
 		driver.findElement(loginButton).click();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 	}
 	
 	public void clickOkForTheAlert() {

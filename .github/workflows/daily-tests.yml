@@ -1,9 +1,9 @@
-name: Maven Daily Build
+name: Hisan Daily Build
 
 on:
   schedule:
     # Runs every day at 21:30 UTC
-    - cron: "30 21 * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:

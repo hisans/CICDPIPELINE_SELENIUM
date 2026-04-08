@@ -2,6 +2,19 @@ name: Hisan Daily Build
 
 on:
   workflow_dispatch: # allows manual trigger from GitHub UI
+    inputs:
+      browser:
+        type: choice
+        required: true
+        description: what browser should be used for test execution?
+        default: Chrome
+        options:
+          - Chrome
+          - Firefox
+      url: 
+        required: true
+        description: Which url will be used?
+        default: 'https://swtestacademy.com'
 
 jobs:
   build:
@@ -19,4 +32,4 @@ jobs:
           cache: maven
 
       - name: Build and test with Maven
-        run: mvn -B clean test-Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+        run: mvn -B clean test-Dbrowser=${{ github.event.inputs.browser }} -Durl=${{ github.event.inputs.url }}

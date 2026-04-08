@@ -1,0 +1,22 @@
+name: Hisan Daily Build
+
+on:
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: maven
+
+      - name: Build and test with Maven
+        run: mvn -B clean test-Dbrowser=Chrome -Durl=https://www.swtestacademy.com

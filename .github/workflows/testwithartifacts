@@ -1,0 +1,32 @@
+name: Hisan test with artifacts
+
+on:
+  schedule:
+    # Runs every day at 21:30 UTC
+   # - cron: "*/10 * * * *"
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean test
+
+      - name: Screenshot Upload
+        uses: actions/upload-artifacts@v2
+        with:
+           name: cypress-screenshots
+           path:test/screenshots
+   
